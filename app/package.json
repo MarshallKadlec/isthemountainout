@@ -1,0 +1,16 @@
+{
+  "name": "isthemountainout",
+  "version": "1.0.0",
+  "description": "Is the Mountain Out",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tyler and Marshall",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.1",
+    "node-datetime": "^1.0.0"
+  }
+  
+}
