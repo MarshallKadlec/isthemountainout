@@ -30,6 +30,7 @@ function process() {
 
     var url = "https://ismtrainierout.com/timelapse/"+datetime+".jpg";
 
+    // An example of an image with the mountain in it
     //url = 'https://ismtrainierout.com/timelapse/2017_06_10/0710.jpg';
 
     https.get(url, function(res) {
