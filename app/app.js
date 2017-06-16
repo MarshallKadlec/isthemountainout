@@ -10,7 +10,7 @@ var sauron = new clarifai.App(
 var current_result = "I dunno!"
 
 app.get('/', function (req, res) {
-  res.send(""+current_result)
+  res.send(""+(current_result ? "Nope!" : "Yep!"))
 })
 
 var process = function ()
@@ -27,8 +27,17 @@ var process = function ()
 	{
 	  sauron.models.predict(Clarifai.GENERAL_MODEL, url).then(
 	    function(res) {
-		  console.log(res);
-		  current_result = (res['outputs'].indexOf('Mountain') == -1) ? "Nope!" : "Yep!"
+		  console.log(response.outputs[0].data.concepts)
+		  var found = false
+		  response.outputs[0].data.concepts.forEach(
+		    function(ele) {
+			  if(ele['name'].toLowerCase() == 'mountain')
+			  {
+				found = true
+			  }
+			}
+		  );
+		  current_result = found
 	    },
 	    function(err) {
 		  console.error(err);
