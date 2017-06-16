@@ -17,8 +17,12 @@ var current_result = false;
 var url_of_image = "";
 
 app.get('/', function (req, res) {
-    res.send(""+(current_result ? mountain : "No."));
-})
+    res.send(""+(current_result ? mountain : no));
+});
+
+app.get('/api', function (req, res) {
+    res.sendStatus((current_result ? 200 : 404));
+});
 
 function process() {
     // math time
@@ -31,7 +35,7 @@ function process() {
     var url = "https://ismtrainierout.com/timelapse/"+datetime+".jpg";
 
     // An example of an image with the mountain in it
-    //url = 'https://ismtrainierout.com/timelapse/2017_06_10/0710.jpg';
+    // url = 'https://ismtrainierout.com/timelapse/2017_06_10/0710.jpg';
 
     https.get(url, function(res) {
         console.log(datetime+": "+res.statusCode);
@@ -78,7 +82,7 @@ const mountain = `
                         ,sdPBbs.
                       ,d$$$$$$$$b.
                      d$P''Y''Y''?$b
-                    d'    '  '  \\ 'b           YES!
+                    d'    '  '  \\ 'b      The mountain is out!
                    /    |        \\  \\
                   /    / \\       |   \\
              _,--'        |      \\    |
@@ -90,3 +94,17 @@ const mountain = `
 /    |;;;;;;;\\                                             \\
 `
 
+const no = `
+            The mountain is not out.
+                _
+              ('  ).                   _
+             (     ).              .:('  )'.
+)           _(       ''.          :(   .    )
+        .=('(      .   )     .--  '.  (    ) )
+       ((    (..__.:'-'   .+(   )   ' _'  ) )
+'.     '(       ) )       (   .  )     (   )  ._
+  )      ' __.:'   )     (   (   ))     '-'.-('  )
+)  )  ( )       --'       '- __.'         :(      ))
+.-'  (_.'          .')                    '(    )  ))
+                  (_  )                     ' __.:'
+`
