@@ -1,7 +1,12 @@
 FROM ubuntu:latest
 
+RUN apt-get update
+
+# Install imagemagick
+RUN apt-get install -y imagemagick
+
 # Install Node JS
-RUN apt-get update && apt-get install -y nodejs \
+RUN apt-get install -y nodejs \
 && apt-get install -y npm && ln -s /usr/bin/nodejs /usr/bin/node
 ADD ./app/package.json /usr/mtn/app/package.json
 RUN npm --prefix /usr/mtn/app install
