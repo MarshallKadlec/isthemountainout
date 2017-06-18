@@ -1,10 +1,10 @@
 "use strict";
 const express = require('express');
 const app = express();
-const dateTime = require('node-datetime');
 const https = require('https');
 const fs = require('fs');
 const request = require('request');
+const tz = require('moment-timezone');
 const gm = require('gm').subClass({imageMagick: true});
 require('gm-base64');
 var clarifai = require('clarifai');
@@ -25,17 +25,12 @@ app.get('/api', function (req, res) {
 });
 
 function process() {
-    // math time
-    var dt = dateTime.create();
-    var formatted = dt.format('Y_m_d/');
-    var now = (new Date());
-    var hours = now.getHours() - 7
-    hours = hours < 0 ? hours += 24 : hours;
-    hours = hours < 10 ? '0'+hours : hours;
-    var mins = Math.floor(now.getMinutes()/10)*10;
+    var now = moment();
+    var datetime = now.tz('America/Los_Angeles').format('Y_MM_DD/HH');
+    var mins = now.tz('America/Los_Angeles').format('mm');
+    mins = Math.floor(Number(mins)/10)*10;
     mins = mins < 10 ? '0'+mins : mins;
-    var datetime = formatted+hours+mins;
-
+    datetime = datetime + mins;
     var url = "https://ismtrainierout.com/timelapse/"+datetime+".jpg";
 
     // An example of an image with the mountain in it
