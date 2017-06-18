@@ -4,8 +4,7 @@ const app = express();
 const https = require('https');
 const fs = require('fs');
 const request = require('request');
-const moment = require('moment');
-const tz = require('moment-timezone');
+const moment = require('moment-timezone');
 const gm = require('gm').subClass({imageMagick: true});
 require('gm-base64');
 var clarifai = require('clarifai');
@@ -22,35 +21,26 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api', function (req, res) {
-    let obj = {
-        result: current_result,
-        image: url_of_image
-    };
-    res.json(obj);
-});
-
-app.get('/api/simple', function (req, res) {
     res.sendStatus((current_result ? 200 : 404));
 });
 
 function process() {
-    var now = moment();
-    var datetime = now.tz('America/Los_Angeles').format('Y_MM_DD/HH');
-    var mins = now.tz('America/Los_Angeles').format('mm');
-    mins = Math.floor(Number(mins)/10)*10;
-    mins = mins < 10 ? '0'+mins : mins;
-    datetime = datetime + mins;
-    var url = "https://ismtrainierout.com/timelapse/"+datetime+".jpg";
+    // format url (get time in Seattle, get time on the 10th minute - aka floor minutes, build url)
+    var time = moment().tz('America/Los_Angeles').format('YYYY_MM_DD/HHmm');
+    var timeFloored = time.substr(0, time.length - 1) + "0";
+    var url = "https://ismtrainierout.com/timelapse/" + timeFloored + ".jpg";
+
+    var url = "https://ismtrainierout.com/timelapse/"+timeFloored+".jpg";
 
     // An example of an image with the mountain in it
     // url = 'https://ismtrainierout.com/timelapse/2017_06_10/0710.jpg';
 
     https.get(url, function(res) {
-        console.log(datetime +": "+res.statusCode);
+        console.log(timeFloored +": "+res.statusCode);
         if(res.statusCode == 200){
             url_of_image = url;
             containsMountain(url);
-        }
+          }
     });
 }
 
