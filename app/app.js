@@ -5,6 +5,7 @@ const dateTime = require('node-datetime');
 const https = require('https');
 const fs = require('fs');
 const request = require('request');
+var moment = require('moment-timezone');
 const gm = require('gm').subClass({imageMagick: true});
 require('gm-base64');
 var clarifai = require('clarifai');
@@ -33,20 +34,16 @@ app.get('/api/simple', function (req, res) {
 });
 
 function process() {
-    // math time
-    var dt = dateTime.create();
-    var formatted = dt.format('Y_m_d/H');
-    var mins = Math.floor((new Date()).getMinutes()/10)*10;
-    mins = mins < 10 ? '0'+mins : mins;
-    var datetime = formatted+mins;
-
-    var url = "https://ismtrainierout.com/timelapse/"+datetime+".jpg";
+    // format url (get time in Seattle, get time on the 10th minute - aka floor minutes, build url)
+    var time = moment().tz('America/Los_Angeles').format('YYYY_MM_DD/hhmm');
+    var timeFloored = time.substr(0, time.length - 1) + "0";
+    var url = "https://ismtrainierout.com/timelapse/" + timeFloored + ".jpg";
 
     // An example of an image with the mountain in it
     // url = 'https://ismtrainierout.com/timelapse/2017_06_10/0710.jpg';
 
     https.get(url, function(res) {
-        console.log(datetime+": "+res.statusCode);
+        console.log(timeFloored +": "+res.statusCode);
         if(res.statusCode == 200){
             url_of_image = url;
             containsMountain(url);
