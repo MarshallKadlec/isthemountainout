@@ -14,9 +14,8 @@ EXPOSE 3000
 
 WORKDIR /usr/mtn
 ADD ./app /usr/mtn/app
-ADD ./ngrok /usr/mtn/ngrok
 ADD ./start.sh /usr/mtn/start.sh
 ADD ./secrets.json /usr/mtn/secrets.json
 
-RUN chmod +x /usr/mtn/ngrok/ngrok && chmod +x /usr/mtn/start.sh
+RUN chmod +x /usr/mtn/start.sh
 CMD ["/usr/mtn/start.sh"]
