@@ -4,6 +4,7 @@ const app = express();
 const https = require('https');
 const fs = require('fs');
 const request = require('request');
+const moment = require('moment');
 const tz = require('moment-timezone');
 const gm = require('gm').subClass({imageMagick: true});
 require('gm-base64');
@@ -21,6 +22,14 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api', function (req, res) {
+    let obj = {
+        result: current_result,
+        image: url_of_image
+    };
+    res.json(obj);
+});
+
+app.get('/api/simple', function (req, res) {
     res.sendStatus((current_result ? 200 : 404));
 });
 
@@ -37,11 +46,11 @@ function process() {
     // url = 'https://ismtrainierout.com/timelapse/2017_06_10/0710.jpg';
 
     https.get(url, function(res) {
-        console.log(datetime+": "+res.statusCode);
+        console.log(datetime +": "+res.statusCode);
         if(res.statusCode == 200){
             url_of_image = url;
             containsMountain(url);
-          }
+        }
     });
 }
 
