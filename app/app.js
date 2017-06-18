@@ -27,10 +27,13 @@ app.get('/api', function (req, res) {
 function process() {
     // math time
     var dt = dateTime.create();
-    var formatted = dt.format('Y_m_d/H');
-    var mins = Math.floor((new Date()).getMinutes()/10)*10;
+    var formatted = dt.format('Y_m_d/');
+    var now = (new Date());
+    var hours = now.getHours() - 7
+    if(hours < 0) { hours += 24; }
+    var mins = Math.floor(now.getMinutes()/10)*10;
     mins = mins < 10 ? '0'+mins : mins;
-    var datetime = formatted+mins;
+    var datetime = formatted+hours+mins;
 
     var url = "https://ismtrainierout.com/timelapse/"+datetime+".jpg";
 
