@@ -35,7 +35,7 @@ app.get('/api/simple', function (req, res) {
 
 function process() {
     // format url (get time in Seattle, get time on the 10th minute - aka floor minutes, build url)
-    var time = moment().tz('America/Los_Angeles').format('YYYY_MM_DD/hhmm');
+    var time = moment().tz('America/Los_Angeles').format('YYYY_MM_DD/HHmm');
     var timeFloored = time.substr(0, time.length - 1) + "0";
     var url = "https://ismtrainierout.com/timelapse/" + timeFloored + ".jpg";
 
