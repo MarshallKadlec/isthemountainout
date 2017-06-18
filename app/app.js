@@ -1,11 +1,10 @@
 "use strict";
 const express = require('express');
 const app = express();
-const dateTime = require('node-datetime');
 const https = require('https');
 const fs = require('fs');
 const request = require('request');
-var moment = require('moment-timezone');
+const moment = require('moment-timezone');
 const gm = require('gm').subClass({imageMagick: true});
 require('gm-base64');
 var clarifai = require('clarifai');
@@ -22,14 +21,6 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api', function (req, res) {
-    let obj = {
-        result: current_result,
-        image: url_of_image
-    };
-    res.json(obj);
-});
-
-app.get('/api/simple', function (req, res) {
     res.sendStatus((current_result ? 200 : 404));
 });
 
@@ -39,6 +30,8 @@ function process() {
     var timeFloored = time.substr(0, time.length - 1) + "0";
     var url = "https://ismtrainierout.com/timelapse/" + timeFloored + ".jpg";
 
+    var url = "https://ismtrainierout.com/timelapse/"+timeFloored+".jpg";
+
     // An example of an image with the mountain in it
     // url = 'https://ismtrainierout.com/timelapse/2017_06_10/0710.jpg';
 
@@ -47,7 +40,7 @@ function process() {
         if(res.statusCode == 200){
             url_of_image = url;
             containsMountain(url);
-        }
+          }
     });
 }
 
