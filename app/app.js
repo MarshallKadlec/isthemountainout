@@ -30,7 +30,8 @@ function process() {
     var formatted = dt.format('Y_m_d/');
     var now = (new Date());
     var hours = now.getHours() - 7
-    if(hours < 0) { hours += 24; }
+    hours = hours < 0 ? hours += 24 : hours;
+    hours = hours < 10 ? '0'+hours : hours;
     var mins = Math.floor(now.getMinutes()/10)*10;
     mins = mins < 10 ? '0'+mins : mins;
     var datetime = formatted+hours+mins;
