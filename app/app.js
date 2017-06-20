@@ -96,13 +96,15 @@ function containsMountain(url) {
                     }
                 }
                 console.log('Found: ' + found);
-                current_result = found;
 
-                let obj = {
-                    result: current_result,
-                    image: url_of_image
-                };
-                webHooks.trigger('mountainChange', obj);
+                if(current_result != found) {
+                    let obj = {
+                        result: current_result,
+                        image: found
+                    };
+                    webHooks.trigger('mountainChange', obj);
+                }
+                current_result = found;
             },
             err => {
                 console.log(JSON.stringify(err));
