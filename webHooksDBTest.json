@@ -1,5 +1,9 @@
 {
     "mountainChange":[
-        "https://1e4fc728.ngrok.io"
+        "https://1e4fc728.ngrok.io",
+        "https://maker.ifttt.com/trigger/mountain_change/with/key/bWTct5r3hKIic01D62BcLn"
+    ],
+    "mountainIsOut":[
+        "https://maker.ifttt.com/trigger/mountain_is_out/with/key/bWTct5r3hKIic01D62BcLn"
     ]
 }
