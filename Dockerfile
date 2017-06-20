@@ -16,6 +16,8 @@ WORKDIR /usr/mtn
 ADD ./app /usr/mtn/app
 ADD ./start.sh /usr/mtn/start.sh
 ADD ./secrets.json /usr/mtn/secrets.json
+ADD ./webHooksDBProduction.json /usr/mtn/webHooksDBProduction.json
+ADD ./webHooksDBTest.json /usr/mtn/webHooksDBTest.json
 
 RUN chmod +x /usr/mtn/start.sh
 CMD ["/usr/mtn/start.sh"]

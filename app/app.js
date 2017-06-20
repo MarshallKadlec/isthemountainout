@@ -21,6 +21,12 @@ const sauron = new clarifai.App(
     secrets.clarifai.client_secret
 );
 
+// WebHooks setup
+const WebHooks = require('node-webhooks');
+const webHooks = new WebHooks({
+    db: './../webHooksDBTest.json', // json file that store webhook URLs
+});
+
 // Misc
 const fs = require('fs');
 const https = require('https');
@@ -91,6 +97,12 @@ function containsMountain(url) {
                 }
                 console.log('Found: ' + found);
                 current_result = found;
+
+                let obj = {
+                    result: current_result,
+                    image: url_of_image
+                };
+                webHooks.trigger('mountainChange', obj);
             },
             err => {
                 console.log(JSON.stringify(err));
