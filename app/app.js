@@ -28,7 +28,7 @@ const sauron = new clarifai.App(
 // WebHooks setup
 const WebHooks = require('node-webhooks');
 const webHooks = new WebHooks({
-    db: './../webHooksDBTest.json', // json file that store webhook URLs
+    db: './../webHooksDBProduction.json', // json file that store webhook URLs
 });
 
 // Misc
@@ -45,7 +45,12 @@ io.on('connection', function (socket) {
 
 // For the ASCII Art
 app.get('/', (req, res) => {
-    res.send((current_result ? mountain : no));
+    let ua = req.headers['user-agent'];
+    console.log(ua);
+    if(/curl|powershell/i.test(ua))
+        res.send((current_result ? mountain : no));
+    else
+        res.send(formatForBrowser(current_result ? mountain : no));
 });
 
 // For the JSON response
@@ -122,6 +127,35 @@ function containsMountain(url) {
             }
         );
     });
+}
+
+function formatForBrowser(result) {
+    return `
+<html>
+<head>
+<style>
+body {
+    background-color: black;
+}
+pre {
+    color: white;
+    font-family: monospace;
+    vertical-align: middle;
+    margin: 0 auto;
+    padding: 14px;
+    width: 483px;
+    margin-top: 200px;
+    border: white solid 1px;
+}
+</style>
+</head>
+<body>
+<pre>
+${result}
+</pre>
+</body>
+</html>
+`
 }
 
 const mountain = `
