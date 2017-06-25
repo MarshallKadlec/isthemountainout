@@ -32,7 +32,6 @@ const webHooks = new WebHooks({
 });
 
 // Misc
-const fs = require('fs');
 const request = require('request');
 const moment = require('moment-timezone');
 
@@ -92,7 +91,7 @@ function containsMountain(url) {
     gm(request(url))
     .crop(178, 100, 296, 119)
     .toBase64('png', (err, base64) => {
-        sauron.models.predict(Clarifai.GENERAL_MODEL, {base64: base64}).then(
+        sauron.models.predict(clarifai.GENERAL_MODEL, {base64: base64}).then(
             response => {
                 var list = response.outputs[0].data.concepts;
                 var found = false;
