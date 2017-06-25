@@ -3,10 +3,14 @@
 // Load keys
 const secrets = require('../secrets');
 
-// Express setup
+// Express & Socket.io setup
 const express = require('express');
 const app = express();
-app.listen(3000, function () {
+const https = require('https');
+const http = require('http');
+var server = http.Server(app);
+var io = require('socket.io')(server);
+server.listen(3000, function () {
     console.log('The Mountain is listening on port 3000')
 })
 
@@ -29,13 +33,16 @@ const webHooks = new WebHooks({
 
 // Misc
 const fs = require('fs');
-const https = require('https');
 const request = require('request');
 const moment = require('moment-timezone');
 
 // Current Data
 let current_result = false;
 let url_of_image = '';
+
+io.on('connection', function (socket) {
+    socket.emit('mountainChange', { result: current_result });
+});
 
 // For the ASCII Art
 app.get('/', (req, res) => {
@@ -100,11 +107,13 @@ function containsMountain(url) {
                 if (current_result != found) {
                     let obj = {
                         result: current_result,
-                        image: found
+                        image: url_of_image
                     };
                     webHooks.trigger('mountainChange', obj);
+                    io.emit('mountainChange', obj);
                     if (found) {
                         webHooks.trigger('mountainIsOut', obj);
+                        io.emit('mountainIsOut', obj);
                     }
                 }
                 current_result = found;
